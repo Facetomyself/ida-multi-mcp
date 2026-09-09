@@ -1,5 +1,7 @@
 # Troubleshooting
 
+Last updated: 2026-09-09
+
 [← back to README](../README.md)
 
 ## Troubleshooting
@@ -71,6 +73,8 @@ This happens when the MCP client starts Python in UTF-8 mode (`PYTHONUTF8=1`, Gr
 `ida-multi-mcp` scans for live IDA GUI processes with `tasklist` / `netstat` **before** answering MCP `initialize`. Those utilities emit OEM/GBK. With `text=True` and UTF-8 decoding, CPython's stdout reader raises `UnicodeDecodeError`, `check_output` returns `None`, and `out.strip()` crashes the process.
 
 Current `ida-multi-mcp` decodes those commands as OEM with replacement and treats discovery failures as "no GUI instances" so headless `idalib_*` tools still start.
+
+The Windows discovery implementation is in [`src/ida_multi_mcp/health.py`](../src/ida_multi_mcp/health.py).
 
 If you are on an older install:
 

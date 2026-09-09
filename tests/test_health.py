@@ -170,8 +170,9 @@ class TestQueryBinaryMetadata:
 class TestConsoleOutput:
     def test_windows_uses_oem_and_replace(self):
         with patch("ida_multi_mcp.health.sys.platform", "win32"):
-            with patch("subprocess.check_output", return_value=None) as mock_output:
-                assert _console_output(["tasklist", "/FO", "CSV", "/NH"]) == ""
+            with patch("subprocess.CREATE_NO_WINDOW", 0, create=True):
+                with patch("subprocess.check_output", return_value=None) as mock_output:
+                    assert _console_output(["tasklist", "/FO", "CSV", "/NH"]) == ""
         kwargs = mock_output.call_args.kwargs
         assert kwargs["encoding"] == "oem"
         assert kwargs["errors"] == "replace"
